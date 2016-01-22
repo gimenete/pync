@@ -1,0 +1,33 @@
+{
+  "name": "pync",
+  "version": "1.0.0",
+  "description": "Utilities for promises pync ~= promise + async",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "coverage": "nyc npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gimenete/pync.git"
+  },
+  "keywords": [
+    "promise",
+    "async",
+    "map",
+    "series"
+  ],
+  "author": "Alberto Gimeno <gimenete@gimenete.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gimenete/pync/issues"
+  },
+  "homepage": "https://github.com/gimenete/pync#readme",
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "nyc": "^5.3.0"
+  }
+}
