@@ -1,7 +1,7 @@
 'use strict'
 
-var assert = require('assert')
-var pync = require('../')
+const assert = require('assert')
+const pync = require('../')
 
 var status = null
 var iterations = 0

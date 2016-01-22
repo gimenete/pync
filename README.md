@@ -20,7 +20,7 @@ function somethingAsync(value) {
 
 Then we use `Promise.all()`:
 
-```
+```javascript
 Promise.all([1, 2, 3].map((value) => somethingAsync(value)))
   .then((results) => console.log('done', results))
 ```
@@ -39,22 +39,52 @@ done [ 'result 1', 'result 2', 'result 3' ]
 
 This means all promises are started at once. What if we want to run one after another? Pync solves that with these two methods:
 
-# Pync.series(arr, func)
+## pync.series(arr, func)
 
 ```javascript
-var pync = require('pync')
+const pync = require('pync')
 
-const arr = [/* whatever */]
+const arr = [1, 2, 3]
 pync.series(arr, (value) => somethingAsync(value))
   .then(() => console.log('done'))
 ```
 
-# Pync.map(arr, func)
+This is the output:
+
+```
+starting 1
+finishing 1
+starting 2
+finishing 2
+starting 3
+finishing 3
+done
+```
+
+## pync.map(arr, func)
 
 ```javascript
-var pync = require('pync')
+const pync = require('pync')
 
-const arr = [/* whatever */]
+const arr = [1, 2, 3]
 pync.map(arr, (value) => somethingAsync(value))
   .then((results) => console.log('done', results))
+```
+
+This is the output:
+
+```
+starting 1
+finishing 1
+starting 2
+finishing 2
+starting 3
+finishing 3
+done [ 'result 1', 'result 2', 'result 3' ]
+```
+
+# Installing
+
+```bash
+npm install pync --save
 ```
