@@ -1,3 +1,4 @@
+/* global describe it */
 'use strict'
 
 const assert = require('assert')
@@ -9,7 +10,7 @@ const arr = [0, 1, 2, 3]
 const timeout = (value) => {
   return new Promise((resolve, reject) => {
     if (value > 0) {
-      assert.equal(status, `finishing ${value-1}`)
+      assert.equal(status, `finishing ${value - 1}`)
     }
     status = `starting ${value}`
     setTimeout(() => {
@@ -21,7 +22,6 @@ const timeout = (value) => {
 }
 
 describe('Pync', () => {
-
   it('#series', () => {
     status = null
     iterations = 0
@@ -56,4 +56,13 @@ describe('Pync', () => {
       })
   })
 
+  it('#dict', () => {
+    return pync.dict(['foo', 'bar'], (value) => value + value)
+      .then((results) => {
+        assert.deepEqual(results, {
+          foo: 'foofoo',
+          bar: 'barbar'
+        })
+      })
+  })
 })

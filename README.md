@@ -37,7 +37,7 @@ finishing 3
 done [ 'result 1', 'result 2', 'result 3' ]
 ```
 
-This means all promises are started at once. What if we want to run one after another? Pync solves that with these two methods:
+This means all promises are started at once. What if we want to run one after another? Imagine you have an array of URLs and you want to download the files pointed by them. You probably don't want to download all at once. `pync` solves that with these two methods:
 
 ## pync.series(arr, func)
 
@@ -81,6 +81,24 @@ finishing 2
 starting 3
 finishing 3
 done [ 'result 1', 'result 2', 'result 3' ]
+```
+
+## pync.dict(arr, func)
+
+Given an array of strings it will call `func` for each string and finally construct an object with all the keys mapped to the values returned by `func`.
+
+```javascript
+const pync = require('pync')
+
+const arr = ['foo.txt', 'bar.txt']
+pync.dict(arr, (filename) => readFileAsync(filename))
+  .then((results) => console.log('done', results))
+```
+
+This is the output:
+
+```
+done { 'foo.txt': 'contents of foo.txt', 'bar.txt': 'contents of bar.txt' }
 ```
 
 # Installing

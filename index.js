@@ -14,7 +14,7 @@ pync.map = function (arr, func) {
   return promise
     .then((value) => {
       results.push(value)
-      results.splice(0, 1)
+      results.shift()
       return results
     })
 }
@@ -25,4 +25,16 @@ pync.series = function (arr, func) {
     promise = promise.then(() => func(value))
   })
   return promise
+}
+
+pync.dict = function (keys, func) {
+  let result = {}
+  let promise = Promise.resolve()
+  keys.forEach((key) => {
+    promise = promise.then(() => func(key))
+      .then((res) => {
+        result[key] = res
+      })
+  })
+  return promise.then(() => result)
 }
