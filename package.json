@@ -1,6 +1,6 @@
 {
   "name": "pync",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utilities for promises pync ~= promise + async",
   "main": "index.js",
   "directories": {
