@@ -101,6 +101,19 @@ This is the output:
 done { 'foo.txt': 'contents of foo.txt', 'bar.txt': 'contents of bar.txt' }
 ```
 
+## pync.whilst(test, func[, initialValue])
+
+It executes a given function `func` whilst a given function `test` returns a truly value. The `test` function must be synchronous and it's always evaluated before `func`. You can pass an initial value, in which case both the `test` and `func` functions will receive it as an argument. Then, the value returned by `func` will be passed to the next iteration, so both `test` and `func` will receive it. And when finally `test` returns a falsy value, the latest value returned by `func` will be returned by `pync.whilst()`
+
+```javascript
+const pync = require('pync')
+
+const test = (totalAffectedRows) => totalAffectedRows < 1000
+const func = (totalAffectedRows) => db.someBatchUpdate().then((result) => result.affectedRows + totalAffectedRows)
+pync.whilst(test, func, 0)
+  .then((totalAffectedRows) => console.log('total affected rows', totalAffectedRows))
+```
+
 # Installing
 
 ```bash

@@ -65,4 +65,26 @@ describe('Pync', () => {
         })
       })
   })
+
+  it('#whilst', function () {
+    this.timeout(10000)
+    var n = 0
+    var max = 10 // Test it with 1,000,000
+    iterations = 0
+    var initialValue = []
+    const test = (val) => {
+      assert.equal(val, initialValue)
+      return ++n < max
+    }
+    const func = (val) => {
+      assert.equal(val, initialValue)
+      iterations++
+      return val
+    }
+    return pync.whilst(test, func, initialValue)
+      .then((val) => {
+        assert.equal(val, initialValue)
+        assert.equal(iterations, max)
+      })
+  })
 })

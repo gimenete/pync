@@ -2,7 +2,7 @@
 
 var pync = module.exports = {}
 
-pync.map = function (arr, func) {
+pync.map = (arr, func) => {
   let results = []
   let promise = Promise.resolve()
   arr.forEach((value) => {
@@ -19,7 +19,7 @@ pync.map = function (arr, func) {
     })
 }
 
-pync.series = function (arr, func) {
+pync.series = (arr, func) => {
   let promise = Promise.resolve()
   arr.forEach((value) => {
     promise = promise.then(() => func(value))
@@ -27,7 +27,7 @@ pync.series = function (arr, func) {
   return promise
 }
 
-pync.dict = function (keys, func) {
+pync.dict = (keys, func) => {
   let result = {}
   let promise = Promise.resolve()
   keys.forEach((key) => {
@@ -37,4 +37,9 @@ pync.dict = function (keys, func) {
       })
   })
   return promise.then(() => result)
+}
+
+pync.whilst = (test, func, initial) => {
+  let next = (value) => Promise.resolve().then(() => func(value)).then((val) => test(val) ? next(val) : val)
+  return next(initial)
 }
