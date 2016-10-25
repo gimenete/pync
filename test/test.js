@@ -7,7 +7,8 @@ const pync = require('../')
 var status = null
 var iterations = 0
 const arr = [0, 1, 2, 3]
-const timeout = (value) => {
+const timeout = (value, i) => {
+  assert.equal(iterations, i)
   return new Promise((resolve, reject) => {
     if (value > 0) {
       assert.equal(status, `finishing ${value - 1}`)
@@ -25,14 +26,14 @@ describe('Pync', () => {
   it('#series', () => {
     status = null
     iterations = 0
-    return pync.series(arr, (value) => timeout(value))
+    return pync.series(arr, (value, i) => timeout(value, i))
       .then(() => assert.equal(iterations, arr.length))
   })
 
   it('#map', () => {
     status = null
     iterations = 0
-    return pync.map(arr, (value) => timeout(value))
+    return pync.map(arr, (value, i) => timeout(value, i))
       .then((results) => {
         assert.equal(iterations, arr.length)
         assert.deepEqual(results, arr.map((value) => `result ${value}`))
@@ -42,14 +43,14 @@ describe('Pync', () => {
   it('#series with empty array', () => {
     status = null
     iterations = 0
-    return pync.series([], (value) => timeout(value))
+    return pync.series([], (value, i) => timeout(value, i))
       .then(() => assert.equal(iterations, 0))
   })
 
   it('#map with empty array', () => {
     status = null
     iterations = 0
-    return pync.map([], (value) => timeout(value))
+    return pync.map([], (value, i) => timeout(value, i))
       .then((results) => {
         assert.deepEqual(results, [])
         assert.equal(iterations, 0)
@@ -57,7 +58,11 @@ describe('Pync', () => {
   })
 
   it('#dict', () => {
-    return pync.dict(['foo', 'bar'], (value) => value + value)
+    iterations = 0
+    return pync.dict(['foo', 'bar'], (value, i) => {
+      assert.equal(i, iterations++)
+      return value + value
+    })
       .then((results) => {
         assert.deepEqual(results, {
           foo: 'foofoo',
@@ -76,7 +81,8 @@ describe('Pync', () => {
       assert.equal(val, initialValue)
       return ++n < max
     }
-    const func = (val) => {
+    const func = (val, i) => {
+      assert.equal(i, iterations)
       assert.equal(val, initialValue)
       iterations++
       return val

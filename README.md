@@ -37,7 +37,7 @@ finishing 3
 done [ 'result 1', 'result 2', 'result 3' ]
 ```
 
-This means all promises are started at once. What if we want to run one after another? Imagine you have an array of URLs and you want to download the files pointed by them. You probably don't want to download all at once. `pync` solves that with these two methods:
+This means all promises are started at once. What if we want to run one after another? Imagine you have an array of URLs and you want to download the files pointed by them. You probably don't want to download all at once. `pync` solves that with these methods:
 
 ## pync.series(arr, func)
 
@@ -113,6 +113,10 @@ const func = (totalAffectedRows) => db.someBatchUpdate().then((result) => result
 pync.whilst(test, func, 0)
   .then((totalAffectedRows) => console.log('total affected rows', totalAffectedRows))
 ```
+
+# Index
+
+All iteratees receive the current iteration number as second parameter.
 
 # Installing
 

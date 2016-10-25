@@ -5,10 +5,10 @@ var pync = module.exports = {}
 pync.map = (arr, func) => {
   let results = []
   let promise = Promise.resolve()
-  arr.forEach((value) => {
+  arr.forEach((value, i) => {
     promise = promise.then((result) => {
       results.push(result)
-      return func(value)
+      return func(value, i)
     })
   })
   return promise
@@ -21,8 +21,8 @@ pync.map = (arr, func) => {
 
 pync.series = (arr, func) => {
   let promise = Promise.resolve()
-  arr.forEach((value) => {
-    promise = promise.then(() => func(value))
+  arr.forEach((value, i) => {
+    promise = promise.then(() => func(value, i))
   })
   return promise
 }
@@ -30,8 +30,8 @@ pync.series = (arr, func) => {
 pync.dict = (keys, func) => {
   let result = {}
   let promise = Promise.resolve()
-  keys.forEach((key) => {
-    promise = promise.then(() => func(key))
+  keys.forEach((key, i) => {
+    promise = promise.then(() => func(key, i))
       .then((res) => {
         result[key] = res
       })
@@ -40,6 +40,7 @@ pync.dict = (keys, func) => {
 }
 
 pync.whilst = (test, func, initial) => {
-  let next = (value) => Promise.resolve().then(() => func(value)).then((val) => test(val) ? next(val) : val)
+  let i = 0
+  let next = (value) => Promise.resolve().then(() => func(value, i++)).then((val) => test(val) ? next(val) : val)
   return next(initial)
 }
